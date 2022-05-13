@@ -1,15 +1,19 @@
-import React, { FC, HTMLAttributes, ReactChild } from 'react';
+import React, { HTMLAttributes, ReactNode } from 'react';
 
-export interface Props extends HTMLAttributes<HTMLDivElement> {
-  /** custom content, defaults to 'the snozzberries taste like snozzberries' */
-  children?: ReactChild;
+interface SelectProps extends HTMLAttributes<HTMLSelectElement> {
+	children: ReactNode;
+	variant?:"filled" | "outlined" | "flushed" | "samurai";
 }
 
-// Please do not use types off of a default export module or else Storybook Docs will suffer.
-// see: https://github.com/storybookjs/storybook/issues/9556
-/**
- * A custom Thing component. Neat!
- */
-export const Thing: FC<Props> = ({ children }) => {
-  return <div>{children || `the snozzberries taste like snozzberries`}</div>;
+// sets the default variant to outlined
+const Select = ( {children, variant="outlined", ...props}:SelectProps ) => {
+
+    return (
+        <select {...props}>
+        	{children}
+        </select>
+    );
 };
+ 
+
+export default Select;
