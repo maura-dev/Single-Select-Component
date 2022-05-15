@@ -1,26 +1,50 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import React, { JSXElementConstructor, ReactNode, HTMLAttributes, useState,  ReactElement } from 'react';
 import {
-  defaultStyles,
   headingStyle,
 } from './styles/default';
 import { OptionsGroup } from './OptionsGroup';
-// import { ChakraProvider, chakra } from '@chakra-ui/react';
+import { styled } from '@stitches/react';
 
-// import { chakra } from '@chakra-ui/react';
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   children: ReactElement<any, string | JSXElementConstructor<any>>;
   placeholder: string;
-  variant?:"filled" | "flushed" | "outlined" | "samurai";
+  variant?:"filled" | "flushed" | "outlined" ;
+  borderColor?: string;
+  isDisabled?: boolean;
+  size?: "md" | "lg" | "sm";
+  isRequired?: boolean;
+  dropdownOpenIcon?: ReactNode;
+  dropdownCloseIcon?: ReactNode;
+  defaultValue?: string | number;
+  errorBorderColor?: string;
+  focusBorderColor?: string;
+  placeholderColor?: string;
+  placeholderIcon?: ReactNode;
+  optionsVariant?:"lined" |"unlined";
 }
+
 
 export const SelectDefault = ({
   placeholder,
   variant= "outlined",
   children,
+  borderColor="#E2E8F0",
+  isDisabled= false,
+  size="md",
+  isRequired= false,
+  dropdownOpenIcon=<ChevronDownIcon />,
+  dropdownCloseIcon=<ChevronUpIcon />,
+  defaultValue,
+  errorBorderColor="#E53E3E",
+  focusBorderColor="#3182CE",
+  placeholderColor="#2D3748",
+  placeholderIcon,
+  optionsVariant="unlined",
   ...props
 }: Props) => {
+
   const [open, setOpen] = useState<boolean>(false);
   const [selection, setSelection] = useState<ReactNode[]>([]);
   const toggle = () => setOpen((prev) => !prev);
@@ -45,21 +69,60 @@ export const SelectDefault = ({
     }
     return false;
   }
-
-  // const childrenWithProps = React.Children.map(children, child => {
-  //   if(React.isValidElement(child)){
-  //     return React.cloneElement(child, { handleOnClick, isItemInSelection })
-  //   }
-  //   return child
-  // })
+//base styles for select
+  const BaseSelect = styled('div', {
+    backgroundColor: 'black',
+    borderRadius: '6px',
+    outline: 'none',
+    borderWidth: '1px',
+    borderStyle:'solid',
+    backgroundColor: '#fff',
+    fontSize:'16px',
+    height: '40px',
+    marginTop: '15px',
+    variants: {
+      variant: {
+        filled: {
+          backgroundColor:'#E2E8F0',
+        },
+        outlined:{
+          backgroundColor:'#fff',
+        },
+        flushed: {
+          borderRadius:'0px',
+          border:'none',
+          borderBottom:'1px solid',
+        },
+        
+      },
+      size: {
+        sm:{
+          height:'40px',
+          fontSize:'14px',
+        },
+        md: {
+          height:'45px',
+          fontSize:'16px',
+        },
+        lg: {
+          height: '50px',
+          fontSize:'18px',
+        }
+      },
+    },
+    defaultVariants: {
+      variant:"filled",
+      size:"md",
+    }
+  })
 
   return (
     <>
-      <div style={{ ...defaultStyles }} {...props}>
+      <BaseSelect variant={variant} size={size}  {...props} style={{borderColor: borderColor}}>
         <div
           tabIndex={0}
-          style={{ ...headingStyle }}
           role="button"
+          style={{...headingStyle}}
           onKeyPress={toggle}
           onClick={toggle}
           aria-haspopup="listbox"
@@ -67,14 +130,15 @@ export const SelectDefault = ({
         >
           <div>
             <p style={{ fontWeight: 'bold' }}>
+              <span>{placeholderIcon? placeholderIcon : null} &nbsp; &nbsp;</span>
               {selection.length > 0 ? selection : placeholder}
             </p>
           </div>
           <div>
-            <p>{open ? <ChevronDownIcon /> : <ChevronUpIcon />}</p>
+            <p>{open ? dropdownOpenIcon : dropdownCloseIcon }</p>
           </div>
         </div>
-      </div>
+      </BaseSelect>
 
       { open ?
         (<OptionsGroup>

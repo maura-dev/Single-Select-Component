@@ -4,9 +4,13 @@ import { SelectDefault, Props } from '../src/SelectDefault';
 import { OptionDefault } from '../src/OptionDefault';
 
 const meta: Meta = {
-  title: 'Another Select Component',
+  title: 'Custom Single Select Component',
   component: SelectDefault,
   argTypes: {
+    numberOfChildren:{ 
+      type: "number", 
+      defaultValue: 3,
+    },
     placeholder: {
       defaultValue: "Select one option",
     },
@@ -18,28 +22,34 @@ const meta: Meta = {
 
 export default meta;
 
-const options = [
-            {
-              value: "1",
-              text:"Option1"
-            },
-            {
-              value: "2",
-              text:"Option2"
-            },
-            {
-              value: "3",
-              text:"Option3"
-            }
-      ]
-
-export const Select= () => (
-  <SelectDefault placeholder="Select one option">
-      <OptionDefault value="1"> 1</OptionDefault>
-      <OptionDefault value="2"> 2</OptionDefault>
-      <OptionDefault value="3"> 3</OptionDefault>
+const Template=({ numberOfChildren, ...args}) => (
+  <SelectDefault {...args}>
+    {[...Array(numberOfChildren).keys()].map(n => (
+      <OptionDefault value={n}>{n}</OptionDefault>
+    ))}
   </SelectDefault>
 )
+
+export const Default= Template.bind({})
+// Default.args={
+
+// }
+
+// export const FilledVariant= () => (
+//   <SelectDefault placeholder="Select one option" variant="filled">
+//       <OptionDefault value="1"> 1</OptionDefault>
+//       <OptionDefault value="2"> 2</OptionDefault>
+//       <OptionDefault value="3"> 3</OptionDefault>
+//   </SelectDefault>
+// )
+
+// export const FlushedVariant= () => (
+//   <SelectDefault placeholder="Select one option" variant="flushed">
+//       <OptionDefault value="1"> 1</OptionDefault>
+//       <OptionDefault value="2"> 2</OptionDefault>
+//       <OptionDefault value="3"> 3</OptionDefault>
+//   </SelectDefault>
+// )
 
 
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test

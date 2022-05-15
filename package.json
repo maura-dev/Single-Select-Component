@@ -75,6 +75,7 @@
     "@chakra-ui/react": "^2.0.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@stitches/react": "^1.2.8",
     "framer-motion": "^6.3.3"
   }
 }
