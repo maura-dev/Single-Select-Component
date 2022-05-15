@@ -3,7 +3,7 @@ module.exports = {
   addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-a11y', '@chakra-ui/storybook-addon'],
   features:{
     emotionAlias: false
-  }
+  },
   typescript: {
     check: true, // type-check stories during Storybook build
   },

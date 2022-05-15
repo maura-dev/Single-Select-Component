@@ -5,7 +5,7 @@ import {
 } from './styles/default';
 
 export interface OptionsGroupProps {
-	children: ReactNode[];
+	children: ReactNode | ReactNode[];
     variant?:"lined" | "unlined";
 }
 

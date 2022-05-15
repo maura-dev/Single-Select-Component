@@ -35,11 +35,12 @@ const options = [
 
 export const Select= () => (
   <SelectDefault placeholder="Select one option">
-    {options.map((option) => (
-             <OptionDefault value={option.value}> {option.text}</OptionDefault>
-      ))}      
-       </SelectDefault>
+      <OptionDefault value="1"> 1</OptionDefault>
+      <OptionDefault value="2"> 2</OptionDefault>
+      <OptionDefault value="3"> 3</OptionDefault>
+  </SelectDefault>
 )
+
 
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
 // https://storybook.js.org/docs/react/workflows/unit-testing

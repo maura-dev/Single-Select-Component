@@ -31,7 +31,7 @@ const withChakra = (StoryFn, context) => {
 
   return (
     <ChakraProvider>
-      <div dir={dir} id="story-wrapper" style={{ minHeight: '100vh'}}>
+      <div dir={dir} id="story-wrapper">
         <StoryFn />
       </div>
     </ChakraProvider>
