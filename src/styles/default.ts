@@ -35,6 +35,16 @@ export const listItemStyle = {
   margin: '0 auto',
 };
 
+export const listItemStyleDisabled = {
+  listStyleType: 'none',
+  borderTopLeftRadius: '4px',
+  borderTopRightRadius: '4px',
+  padding: '3px 0',
+  width: '98%',
+  margin: '0 auto',
+  backgroundColor: 'grey',
+};
+
 export const listItemButtonStyle = {
   display: 'flex',
   justifyContent: 'space-between',

@@ -1,41 +1,37 @@
-import { ChevronDownIcon, ChevronUpIcon, CheckIcon } from '@chakra-ui/icons';
-import React, { HTMLAttributes, useState } from 'react';
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import React, { JSXElementConstructor, ReactNode, HTMLAttributes, useState,  ReactElement } from 'react';
 import {
   defaultStyles,
   headingStyle,
-  listItemButtonStyle,
-  listItemStyle,
-  listStyle,
 } from './styles/default';
+import { OptionsGroup } from './OptionsGroup';
+// import { ChakraProvider, chakra } from '@chakra-ui/react';
 
-type selectItems = {
-  id: number;
-  value: string;
-};
+// import { chakra } from '@chakra-ui/react';
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'unlined' | 'lined';
+  children: ReactElement<any, string | JSXElementConstructor<any>>;
   placeholder: string;
-  options?: selectItems[];
+  variant?:"filled" | "flushed" | "outlined" | "samurai";
 }
 
-const SelectDefault = ({
+export const SelectDefault = ({
   placeholder,
-  options = [],
-  variant,
+  variant= "outlined",
+  children,
   ...props
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [selection, setSelection] = useState<selectItems[]>([]);
+  const [selection, setSelection] = useState<ReactNode[]>([]);
   const toggle = () => setOpen((prev) => !prev);
 
-  const handleOnClick = (option: selectItems) => {
-    if (!selection.some((current) => current.id === option.id)) {
+  const handleOnClick = (option: string) => {
+    if (!selection.some((current) => current === option)) {
       setSelection([option]);
     } else {
       let selectionAfterRemoval = selection;
       selectionAfterRemoval = selectionAfterRemoval.filter(
-        (current) => current.id !== option.id
+        (current) => current !== option
       );
       setSelection([...selectionAfterRemoval]);
     }
@@ -43,12 +39,19 @@ const SelectDefault = ({
     toggle();
   };
 
-  function isItemInSelection(item: selectItems) {
-    if (selection.some((current) => current.id === item.id)) {
+  function isItemInSelection(item: string) {
+    if (selection.some((current) => current === item)) {
       return true;
     }
     return false;
   }
+
+  // const childrenWithProps = React.Children.map(children, child => {
+  //   if(React.isValidElement(child)){
+  //     return React.cloneElement(child, { handleOnClick, isItemInSelection })
+  //   }
+  //   return child
+  // })
 
   return (
     <>
@@ -59,10 +62,12 @@ const SelectDefault = ({
           role="button"
           onKeyPress={toggle}
           onClick={toggle}
+          aria-haspopup="listbox"
+          aria-expanded={open}
         >
           <div>
             <p style={{ fontWeight: 'bold' }}>
-              {selection.length > 0 ? selection[0].value : placeholder}
+              {selection.length > 0 ? selection : placeholder}
             </p>
           </div>
           <div>
@@ -71,29 +76,18 @@ const SelectDefault = ({
         </div>
       </div>
 
-      {open && (
-        <div style={{ ...defaultStyles }} {...props}>
-          <ul style={{ ...listStyle }}>
-            {options.map((option) => (
-              <li style={{ ...listItemStyle }} key={option.id}>
-                <button
-                  type="button"
-                  style={{ ...listItemButtonStyle }}
-                  onClick={() => handleOnClick(option)}
-                >
-                  <span>{option.value}</span>
-                  <span>{isItemInSelection(option) && <CheckIcon />}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      { open ?
+        (<OptionsGroup>
+                  {React.Children.map(children, child => {
+                    return React.cloneElement(child, { handleOnClick: handleOnClick, isItemInSelection: isItemInSelection })
+                  })}
+          </OptionsGroup>) : null}
+        
     </>
   );
 };
 
-export default SelectDefault;
+// export const Select = C
 
 // const handleVariantStyle = () => {
 //   if (variant === 'unlined') {
@@ -112,3 +106,5 @@ export default SelectDefault;
 // height: '40px',
 // };
 // };
+
+//export const Select = chakra(SelectDefault)
