@@ -1,19 +1,22 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
-import React, { JSXElementConstructor, ReactNode, HTMLAttributes, useState,  ReactElement } from 'react';
-import {
-  headingStyle,
-} from './styles/default';
+import React, {
+  JSXElementConstructor,
+  ReactNode,
+  HTMLAttributes,
+  useState,
+  ReactElement,
+} from 'react';
+import { headingStyle } from './styles/default';
 import { OptionsGroup } from './OptionsGroup';
 import { styled } from '@stitches/react';
-
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   children: ReactElement<any, string | JSXElementConstructor<any>>;
   placeholder: string;
-  variant?:"filled" | "flushed" | "outlined" ;
+  variant?: 'filled' | 'flushed' | 'outlined';
   borderColor?: string;
   isDisabled?: boolean;
-  size?: "md" | "lg" | "sm";
+  size?: 'md' | 'lg' | 'sm';
   isRequired?: boolean;
   dropdownOpenIcon?: ReactNode;
   dropdownCloseIcon?: ReactNode;
@@ -22,29 +25,27 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
   focusBorderColor?: string;
   placeholderColor?: string;
   placeholderIcon?: ReactNode;
-  optionsVariant?:"lined" |"unlined";
+  optionsVariant?: 'lined' | 'unlined';
 }
-
 
 export const SelectDefault = ({
   placeholder,
-  variant= "outlined",
+  variant = 'outlined',
   children,
-  borderColor="#E2E8F0",
-  isDisabled= false,
-  size="md",
-  isRequired= false,
-  dropdownOpenIcon=<ChevronDownIcon />,
-  dropdownCloseIcon=<ChevronUpIcon />,
+  borderColor = '#E2E8F0',
+  isDisabled = false,
+  size = 'md',
+  isRequired = false,
+  dropdownOpenIcon = <ChevronDownIcon />,
+  dropdownCloseIcon = <ChevronUpIcon />,
   defaultValue,
-  errorBorderColor="#E53E3E",
-  focusBorderColor="#3182CE",
-  placeholderColor="#2D3748",
+  errorBorderColor = '#E53E3E',
+  focusBorderColor = '#3182CE',
+  placeholderColor = '#2D3748',
   placeholderIcon,
-  optionsVariant="unlined",
+  optionsVariant = 'unlined',
   ...props
 }: Props) => {
-
   const [open, setOpen] = useState<boolean>(false);
   const [selection, setSelection] = useState<ReactNode[]>([]);
   const toggle = () => setOpen((prev) => !prev);
@@ -69,60 +70,69 @@ export const SelectDefault = ({
     }
     return false;
   }
-//base styles for select
+  //base styles for select
   const BaseSelect = styled('div', {
     backgroundColor: 'black',
     borderRadius: '6px',
     outline: 'none',
     borderWidth: '1px',
-    borderStyle:'solid',
-    backgroundColor: '#fff',
-    fontSize:'16px',
+    borderStyle: 'solid',
+    fontSize: '16px',
     height: '40px',
     marginTop: '15px',
+    '&:focus': {
+      borderColor: focusBorderColor,
+    },
+    '& .placeholder': {
+      color: placeholderColor,
+    },
     variants: {
       variant: {
         filled: {
-          backgroundColor:'#E2E8F0',
+          backgroundColor: '#E2E8F0',
         },
-        outlined:{
-          backgroundColor:'#fff',
+        outlined: {
+          backgroundColor: '#fff',
         },
         flushed: {
-          borderRadius:'0px',
-          border:'none',
-          borderBottom:'1px solid',
+          borderRadius: '0px',
+          border: 'none',
+          borderBottom: '1px solid',
         },
-        
       },
       size: {
-        sm:{
-          height:'40px',
-          fontSize:'14px',
+        sm: {
+          height: '40px',
+          fontSize: '14px',
         },
         md: {
-          height:'45px',
-          fontSize:'16px',
+          height: '45px',
+          fontSize: '16px',
         },
         lg: {
           height: '50px',
-          fontSize:'18px',
-        }
+          fontSize: '18px',
+        },
       },
     },
     defaultVariants: {
-      variant:"filled",
-      size:"md",
-    }
-  })
+      variant: 'filled',
+      size: 'md',
+    },
+  });
 
   return (
     <>
-      <BaseSelect variant={variant} size={size}  {...props} style={{borderColor: borderColor}}>
+      <BaseSelect
+        variant={variant}
+        size={size}
+        {...props}
+        style={{ borderColor: borderColor }}
+      >
         <div
           tabIndex={0}
           role="button"
-          style={{...headingStyle}}
+          style={{ ...headingStyle }}
           onKeyPress={toggle}
           onClick={toggle}
           aria-haspopup="listbox"
@@ -130,45 +140,29 @@ export const SelectDefault = ({
         >
           <div>
             <p style={{ fontWeight: 'bold' }}>
-              <span>{placeholderIcon? placeholderIcon : null} &nbsp; &nbsp;</span>
+              <span>
+                {placeholderIcon ? placeholderIcon : null} &nbsp; &nbsp;
+              </span>
               {selection.length > 0 ? selection : placeholder}
             </p>
           </div>
           <div>
-            <p>{open ? dropdownOpenIcon : dropdownCloseIcon }</p>
+            <p>{open ? dropdownOpenIcon : dropdownCloseIcon}</p>
           </div>
         </div>
       </BaseSelect>
 
-      { open ?
-        (<OptionsGroup>
-                  {React.Children.map(children, child => {
-                    return React.cloneElement(child, { handleOnClick: handleOnClick, isItemInSelection: isItemInSelection })
-                  })}
-          </OptionsGroup>) : null}
-        
+      {open ? (
+        <OptionsGroup variant={optionsVariant}>
+          {React.Children.map(children, (child) => {
+            return React.cloneElement(child, {
+              handleOnClick: handleOnClick,
+              isItemInSelection: isItemInSelection,
+            });
+          })}
+        </OptionsGroup>
+      ) : null}
     </>
   );
 };
-
-// export const Select = C
-
-// const handleVariantStyle = () => {
-//   if (variant === 'unlined') {
-//     return {};
-//   }
-//   if (variant === 'lined') {
-//     return {};
-//   }
-//   return {
-// minWidth: '300px',
-// padding: '10px 10px',
-// borderRadius: '6px',
-// outline: 'none',
-// border: '1px solid #E2E8F0',
-// background: '#fff',
-// height: '40px',
-// };
-// };
-
 //export const Select = chakra(SelectDefault)
