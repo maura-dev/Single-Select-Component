@@ -21,7 +21,7 @@ export const OptionsGroup = ({
         },
         lined: {
           '& li': {
-            borderBottom: '1px solid #BDBDBD',
+            borderBottom: '1px solid #E2E8F0',
           },
         },
       },

@@ -2,6 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import { SelectDefault, Props } from '../src/SelectDefault';
 import { OptionDefault } from '../src/OptionDefault';
+import {InfoIcon} from '@chakra-ui/icons';
 
 const meta: Meta = {
   title: 'Custom Single Select Component',
@@ -10,6 +11,9 @@ const meta: Meta = {
     numberOfChildren:{ 
       type: "number", 
       defaultValue: 3,
+    },
+    defaultValue: {
+      defaultValue: "1",
     },
     placeholder: {
       defaultValue: "Select one option",
@@ -30,10 +34,9 @@ const Template=({ numberOfChildren, ...args}) => (
   </SelectDefault>
 )
 
-export const Default= Template.bind({})
-// Default.args={
+export const Default= Template.bind({});
 
-// }
+
 
 // export const FilledVariant= () => (
 //   <SelectDefault placeholder="Select one option" variant="filled">

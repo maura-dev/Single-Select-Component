@@ -9,6 +9,7 @@ import React, {
 import { headingStyle } from './styles/default';
 import { OptionsGroup } from './OptionsGroup';
 import { styled } from '@stitches/react';
+import ReactHtmlParser from 'react-html-parser'
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   children: ReactElement<any, string | JSXElementConstructor<any>> | ReactElement[];
@@ -20,12 +21,13 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
   isRequired?: boolean;
   dropdownOpenIcon?: ReactNode;
   dropdownCloseIcon?: ReactNode;
-  defaultValue?: string | number;
+  defaultValue: string;
   errorBorderColor?: string;
   focusBorderColor?: string;
   placeholderColor?: string;
   placeholderIcon?: ReactNode;
   optionsVariant?: 'lined' | 'unlined';
+  isInvalid?:boolean;
 }
 
 export const SelectDefault = ({
@@ -36,9 +38,10 @@ export const SelectDefault = ({
   isDisabled = false,
   size = 'md',
   isRequired = false,
+  isInvalid=false,
   dropdownOpenIcon = <ChevronDownIcon />,
   dropdownCloseIcon = <ChevronUpIcon />,
-  defaultValue,
+  defaultValue="",
   errorBorderColor = '#E53E3E',
   focusBorderColor = '#3182CE',
   placeholderColor = '#2D3748',
@@ -47,18 +50,34 @@ export const SelectDefault = ({
   ...props
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [selection, setSelection] = useState<ReactNode[]>([]);
+  const [selection, setSelection] = useState<string[]>([]);
+  //const [selectOption, setSelectOption] = useState<string>("");
   const toggle = () => setOpen((prev) => !prev);
+  const d = document.getElementById(selection[0]);
 
-  const handleOnClick = (option: string) => {
-    if (!selection.some((current) => current === option)) {
+  // if(defaultValue !== "" && selection.includes(defaultValue)){
+  //   const p = document.getElementsByClassName("selectOption")[0]
+  //   const d = document.getElementById(defaultValue);
+  //   setSelection([defaultValue]);
+  //   d ? setSelectOption(d.innerHTML): null 
+  //   p ? p.innerHTML= selectOption : null
+  // } else{
+  //   setSelection([]);
+  //   setSelectOption("");
+  // }
+
+  const handleOnClick = async (option: string) => {
+    if (selection.includes(option) === false) {
       setSelection([option]);
+      defaultValue = option;
+     
     } else {
       let selectionAfterRemoval = selection;
       selectionAfterRemoval = selectionAfterRemoval.filter(
         (current) => current !== option
       );
       setSelection([...selectionAfterRemoval]);
+      defaultValue = "";
     }
 
     toggle();
@@ -72,7 +91,7 @@ export const SelectDefault = ({
   }
   //base styles for select
   const BaseSelect = styled('div', {
-    backgroundColor: 'black',
+    borderColor: borderColor,
     borderRadius: '6px',
     outline: 'none',
     borderWidth: '1px',
@@ -83,21 +102,32 @@ export const SelectDefault = ({
     '&:focus': {
       borderColor: focusBorderColor,
     },
-    '& .placeholder': {
-      color: placeholderColor,
+    '&:invalid': {
+      borderColor: errorBorderColor ,
     },
     variants: {
       variant: {
         filled: {
           backgroundColor: '#E2E8F0',
+           '&:focus': {
+              borderColor: focusBorderColor ,
+              backgroundColor: "#fff",
+            },
         },
         outlined: {
           backgroundColor: '#fff',
+          '&:focus': {
+              borderColor: focusBorderColor,
+            },
         },
         flushed: {
           borderRadius: '0px',
           border: 'none',
           borderBottom: '1px solid',
+          borderColor:borderColor,
+          '&:focus': {
+              borderColor: focusBorderColor,
+            },
         },
       },
       size: {
@@ -121,13 +151,54 @@ export const SelectDefault = ({
     },
   });
 
+
+  function disabledOrInvalidStyles(x:string){
+    if(isDisabled){
+      if(x==="outlined"){
+        return {
+          color: 'gray',
+          borderColor:'#E2E8F0'
+        }
+      }else if(x==="flushed"){
+        return {
+          color: 'darkgray',
+          borderColor:'#BDBDBD'
+        }
+      }else if(x==="filled"){
+        return {
+          color: '#E2E8F0',
+          borderColor:'rgba(237, 242, 247, 0.2)',
+          backgroundColor:'rgba(237, 242, 247, 0.2)'
+        }
+      } else{
+        return {
+          color: '#2D3748',
+          borderColor:'#E2E8F0'
+        }
+      }
+    } else{
+        if(isInvalid){
+        return {
+            borderColor:errorBorderColor,
+        }
+      }else{
+        return {
+          outline:'none'
+        }
+      }
+    }
+
+    
+  }
+
   return (
     <>
       <BaseSelect
         variant={variant}
         size={size}
         {...props}
-        style={{ borderColor: borderColor }}
+        style={disabledOrInvalidStyles(variant)}
+        aria-invalid={isInvalid}
       >
         <div
           tabIndex={0}
@@ -139,12 +210,12 @@ export const SelectDefault = ({
           aria-expanded={open}
         >
           <div>
-            <p style={{ fontWeight: 'bold' }}>
+            {selection.length > 0 ? <p style={{ color:isDisabled ? "inherit" :placeholderColor }}>{d ? ReactHtmlParser(d.innerHTML) : placeholder}</p> :<p style={{ color:isDisabled ? "inherit" :placeholderColor }}>
               <span>
                 {placeholderIcon ? placeholderIcon : null} &nbsp; &nbsp;
               </span>
-              {selection.length > 0 ? selection : placeholder}
-            </p>
+              {placeholder}
+            </p>}
           </div>
           <div>
             <p>{open ? dropdownOpenIcon : dropdownCloseIcon}</p>
@@ -152,7 +223,7 @@ export const SelectDefault = ({
         </div>
       </BaseSelect>
 
-      {open ? (
+      {open && !isDisabled ? (
         <OptionsGroup variant={optionsVariant}>
           {React.Children.map(children, (child) => {
             return React.cloneElement(child, {

@@ -1,5 +1,4 @@
 export const defaultStyles = {
-  backgroundColor: 'black',
   borderRadius: '6px',
   outline: 'none',
   border: '1px solid #E2E8F0',
@@ -22,37 +21,36 @@ export const listStyle = {
   padding: '0',
   margin: '0',
   width: '100%',
-  marginTop: '10px',
-  minHeight: '160px',
+  marginTop: '0px',
+  minHeight: 'auto',
 };
 
 export const listItemStyle = {
   listStyleType: 'none',
   borderTopLeftRadius: '4px',
   borderTopRightRadius: '4px',
-  padding: '3px 0',
+  padding: '8px 0',
   width: '98%',
   margin: '0 auto',
+  display: 'flex',
+  justifyContent: 'space-between',
 };
 
-export const listItemStyleDisabled = {
-  listStyleType: 'none',
-  borderTopLeftRadius: '4px',
-  borderTopRightRadius: '4px',
-  padding: '3px 0',
-  width: '98%',
-  margin: '0 auto',
-  backgroundColor: 'grey',
-};
+// export const listItemStyleDisabled = {
+//   listStyleType: 'none',
+//   borderTopLeftRadius: '4px',
+//   borderTopRightRadius: '4px',
+//   padding: '3px 0',
+//   width: '98%',
+//   margin: '0 auto',
+//   backgroundColor: 'grey',
+// };
 
 export const listItemButtonStyle = {
   display: 'flex',
   justifyContent: 'space-between',
-  backgroundColor: 'white',
   padding: '5px 10px 5px 10px',
   border: 0,
   width: '100%',
-  fontWeight: 600,
-  fontSize: '13px',
   lineHeight: '20px',
 };
