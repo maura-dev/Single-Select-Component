@@ -1,5 +1,5 @@
-import React, {ReactNode} from 'react';
-import {  CheckIcon } from '@chakra-ui/icons';
+import React, { ReactNode } from 'react';
+import { CheckIcon } from '@chakra-ui/icons';
 import {
   listItemButtonStyle,
 } from './styles/default';
@@ -7,8 +7,8 @@ import { styled } from '@stitches/react';
 
 export interface OptionProps {
   children: string;
-  handleOnClick: any;
-  isItemInSelection: any;
+  handleOnClick?: any;
+  isItemInSelection?: any;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
   value: string;
@@ -88,6 +88,3 @@ export const OptionDefault = ({ handleOnClick, isItemInSelection, disabled=false
                  </BaseOption> 
     );
 };
-
-
-
