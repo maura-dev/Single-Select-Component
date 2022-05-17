@@ -2,21 +2,21 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import { SelectDefault, Props } from '../src/SelectDefault';
 import { OptionDefault } from '../src/OptionDefault';
-import {InfoIcon} from '@chakra-ui/icons';
+import { InfoIcon } from '@chakra-ui/icons';
 
 const meta: Meta = {
   title: 'Custom Single Select Component',
   component: SelectDefault,
   argTypes: {
-    numberOfChildren:{ 
-      type: "number", 
+    numberOfChildren: {
+      type: 'number',
       defaultValue: 3,
     },
     defaultValue: {
-      defaultValue: "1",
+      defaultValue: '1',
     },
     placeholder: {
-      defaultValue: "Select one option",
+      defaultValue: 'Select one option',
     },
   },
   parameters: {
@@ -26,17 +26,15 @@ const meta: Meta = {
 
 export default meta;
 
-const Template=({ numberOfChildren, ...args}) => (
+const Template = ({ numberOfChildren, ...args }) => (
   <SelectDefault {...args}>
-    {[...Array(numberOfChildren).keys()].map(n => (
+    {[...Array(numberOfChildren).keys()].map((n) => (
       <OptionDefault value={n}>{n}</OptionDefault>
     ))}
   </SelectDefault>
-)
+);
 
-export const Default= Template.bind({});
-
-
+export const Default = Template.bind({});
 
 // export const FilledVariant= () => (
 //   <SelectDefault placeholder="Select one option" variant="filled">
@@ -54,8 +52,5 @@ export const Default= Template.bind({});
 //   </SelectDefault>
 // )
 
-
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
 // https://storybook.js.org/docs/react/workflows/unit-testing
-
-
