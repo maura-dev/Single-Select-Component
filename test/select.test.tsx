@@ -41,7 +41,7 @@ describe('Select is rendered without failing', () => {
     const options = getByText('Option 1');
     fireEvent.click(options);
     screen.debug();
-    const hasSVG = container.getElementsByClassName("chakra-icon")
-    expect(hasSVG).toBeInstanceOf()
+    const hasSVG = container.getElementsByClassName('chakra-icon');
+    expect(hasSVG).toBeDefined();
   });
 });
