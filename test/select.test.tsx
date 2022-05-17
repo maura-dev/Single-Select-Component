@@ -1,22 +1,29 @@
-import React from 'react';
+import React, { ReactComponentElement, ReactElement } from 'react';
 import { SelectDefault } from '../src/SelectDefault';
 // import { OptionsGroup } from '../src/OptionsGroup';
-import { Option } from '../src/Option';
+// import { Option } from '../src/Option';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-// import { OptionDefault } from '../src/OptionDefault';
+import { OptionDefault } from '../src/OptionDefault';
+
+// Testing SelectDefault with OptionDefault
 
 describe('Select is rendered without failing', () => {
-  const select = (
-    <SelectDefault placeholder="Select Options">
-      <Option>Option 1</Option>
-    </SelectDefault>
-  );
+  let select: ReactComponentElement<any, ReactElement>;
+
+  beforeEach(() => {
+    select = (
+      <SelectDefault placeholder="Select Options">
+        <OptionDefault value="true"> Option 1</OptionDefault>
+        <OptionDefault value="false"> 2</OptionDefault>
+        <OptionDefault value="false"> 3</OptionDefault>
+      </SelectDefault>
+    );
+  });
   it('Should render completely without failing', () => {
     const { getByRole } = render(select);
     // const placeholder = getByText('Select Options').className;
     const optionDiv = getByRole('button');
-    screen.debug();
 
     // expect(placeholder).toEqual('select-placeholder');
     expect(optionDiv).toBeDefined();
@@ -25,19 +32,16 @@ describe('Select is rendered without failing', () => {
   it('Should contain the options dropdown on click', () => {
     const { getByText } = render(select);
     fireEvent.click(screen.getByRole(/button/i));
+    const options = getByText('Option 1');
+    expect(options).toBeInTheDocument();
+  });
+  it('Should be able to click to an Option Button', () => {
+    const { getByText, container } = render(select);
+    fireEvent.click(screen.getByRole(/button/i));
+    const options = getByText('Option 1');
+    fireEvent.click(options);
     screen.debug();
-    expect(getByText('Option 1')).toBeInTheDocument();
+    const hasSVG = container.getElementsByClassName("chakra-icon")
+    expect(hasSVG).toBeInstanceOf()
   });
 });
-
-// Testing SelectDefault with OptionDefault
-
-// describe("Test suite for SelectDefault and OptionsGroup", ()=>{
-//   const select = (
-//     <SelectDefault placeholder="Select Options">
-//         <OptionDefault>Option 1</OptionDefault>
-//     </SelectDefault>
-//   );
-//   it("Should be able to render correctly")
-
-// })

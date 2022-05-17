@@ -11,7 +11,7 @@ import { OptionsGroup } from './OptionsGroup';
 import { styled } from '@stitches/react';
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
-  children: ReactElement<any, string | JSXElementConstructor<any>>;
+  children: ReactElement<any, string | JSXElementConstructor<any>> | ReactElement[];
   placeholder: string;
   variant?: 'filled' | 'flushed' | 'outlined';
   borderColor?: string;
