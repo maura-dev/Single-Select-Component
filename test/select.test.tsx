@@ -11,10 +11,10 @@ describe('Select is rendered without failing', () => {
 
   beforeEach(() => {
     select = (
-      <SelectDefault placeholder="Select Options">
-        <OptionDefault value="true"> Option 1</OptionDefault>
-        <OptionDefault value="false"> Option 2</OptionDefault>
-        <OptionDefault value="false"> Option 3</OptionDefault>
+      <SelectDefault defaultValue='Option 1' placeholder="Select Options">
+        <OptionDefault value="Option 1"> Option 1</OptionDefault>
+        <OptionDefault value="Option 2"> Option 2</OptionDefault>
+        <OptionDefault value="Option 3"> Option 3</OptionDefault>
       </SelectDefault>
     );
   });
