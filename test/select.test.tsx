@@ -40,12 +40,12 @@ describe('Select is rendered without failing', () => {
     expect(hasSVG).toBeInTheDocument();
   });
 
-  it('Should be able to test using the query selector', () => {
-    const { container } = render(select);
-    const div = container.firstChild;
-    const aria = container.querySelector('[ aria-haspopup="listbox"]');
+  // it('Should be able to test using the query selector', () => {
+  //   const { container } = render(select);
+  //   const div = container.firstChild;
+  //   const aria = container.querySelector('[ aria-haspopup="listbox"]');
 
-    expect(aria).toBeInTheDocument();
-    expect(div).toBeInTheDocument();
-  });
+  //   expect(aria).toBeInTheDocument();
+  //   expect(div).toBeInTheDocument();
+  // });
 });
