@@ -5,6 +5,7 @@ export const defaultStyles = {
   background: '#fff',
   minHeight: '40px',
   marginTop: '15px',
+  // position:'relative',
 };
 
 export const headingStyle = {
@@ -17,10 +18,16 @@ export const headingStyle = {
   padding: '5px 10px 5px 10px',
 };
 
+export const caretStyle = {
+  position:'absolute',
+  top:'-17px',
+  left:'20px',
+};
+
 export const listStyle = {
   padding: '0',
   margin: '0',
-  width: '100%',
+  width: 'inherit',
   marginTop: '0px',
   minHeight: 'auto',
 };

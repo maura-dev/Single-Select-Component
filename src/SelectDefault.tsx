@@ -4,13 +4,14 @@ import React, {
   ReactNode,
   HTMLAttributes,
   useState,
-  ReactElement,
-  CSSProperties,
+  ReactElement
 } from 'react';
 import { headingStyle } from './styles/default';
 import { OptionsGroup } from './OptionsGroup';
 import { styled } from '@stitches/react';
-import ReactHtmlParser from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser'
+import { chakra } from '@chakra-ui/react';
+import CSS from 'csstype';
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   children:
@@ -32,7 +33,9 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
   optionsVariant?: 'lined' | 'unlined';
   isInvalid?: boolean;
   inputLabel?: string;
-  inputLabelStyle?: CSSProperties;
+  triggerStyles?:CSS.Properties;
+  optionsStyles?:CSS.Properties;
+  inputLabelStyle?: CSS.Properties;
 }
 
 export const SelectDefault = ({
@@ -52,31 +55,21 @@ export const SelectDefault = ({
   placeholderColor = '#2D3748',
   placeholderIcon,
   optionsVariant = 'unlined',
+  triggerStyles,
+  optionsStyles,
   inputLabel,
   inputLabelStyle,
   ...props
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [selection, setSelection] = useState<string[]>([]);
-  //const [selectOption, setSelectOption] = useState<string>("");
   const toggle = () => setOpen((prev) => !prev);
   const d = document.getElementById(selection[0]);
 
-  // if(defaultValue !== "" && selection.includes(defaultValue)){
-  //   const p = document.getElementsByClassName("selectOption")[0]
-  //   const d = document.getElementById(defaultValue);
-  //   setSelection([defaultValue]);
-  //   d ? setSelectOption(d.innerHTML): null
-  //   p ? p.innerHTML= selectOption : null
-  // } else{
-  //   setSelection([]);
-  //   setSelectOption("");
-  // }
-
+  //function that handles when an option is clicked 
   const handleOnClick = async (option: string) => {
     if (selection.includes(option) === false) {
       setSelection([option]);
-      defaultValue = option;
     } else {
       let selectionAfterRemoval = selection;
       selectionAfterRemoval = selectionAfterRemoval.filter(
@@ -89,6 +82,7 @@ export const SelectDefault = ({
     toggle();
   };
 
+  //function to check if an option is selected
   function isItemInSelection(item: string) {
     if (selection.some((current) => current === item)) {
       return true;
@@ -157,6 +151,7 @@ export const SelectDefault = ({
     },
   });
 
+  //function to handle styles for disabled and invalid states
   function disabledOrInvalidStyles(x: string) {
     if (isDisabled) {
       if (x === 'outlined') {
@@ -196,13 +191,14 @@ export const SelectDefault = ({
 
   return (
     <>
-      <label style={{ ...inputLabelStyle }}>{inputLabel}</label>
+      <label style={{ ...inputLabelStyle }}>{inputLabel}&nbsp;<sup style={{color:'red'}}>{isRequired? '*' : null}</sup></label>
       <BaseSelect
         variant={variant}
         size={size}
         {...props}
-        style={disabledOrInvalidStyles(variant)}
+        style={{...(disabledOrInvalidStyles(variant)), ...triggerStyles}}
         aria-invalid={isInvalid}
+        id="ssc-select"
       >
         <div
           tabIndex={0}
@@ -234,7 +230,7 @@ export const SelectDefault = ({
       </BaseSelect>
 
       {open && !isDisabled ? (
-        <OptionsGroup variant={optionsVariant}>
+        <OptionsGroup variant={optionsVariant} optionsStyles={optionsStyles}>
           {React.Children.map(children, (child) => {
             return React.cloneElement(child, {
               handleOnClick: handleOnClick,
@@ -246,4 +242,5 @@ export const SelectDefault = ({
     </>
   );
 };
-//export const Select = chakra(SelectDefault)
+
+export const Select = chakra(SelectDefault)
