@@ -36,8 +36,12 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
   triggerStyles?: CSS.Properties;
   optionsStyles?: CSS.Properties;
   inputLabelStyle?: CSS.Properties;
-  onSelectChange: (value: any) => any;
+  onSelectChange?: (value: any) => any;
 }
+const handleChangeFunc = (value: any) => {
+  console.log({ value });
+  return value;
+};
 
 export const SelectDefault = ({
   placeholder,
@@ -60,7 +64,7 @@ export const SelectDefault = ({
   optionsStyles,
   inputLabel,
   inputLabelStyle,
-  onSelectChange,
+  onSelectChange = handleChangeFunc,
   ...props
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
