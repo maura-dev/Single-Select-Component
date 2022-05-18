@@ -12,7 +12,7 @@ export const OptionsGroup = ({
   variant,
   ...props
 }: OptionsGroupProps) => {
-  console.log({ variant });
+  // console.log({ variant });
   const BaseOption = styled('div', {
     variants: {
       variant: {
