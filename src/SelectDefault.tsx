@@ -4,12 +4,12 @@ import React, {
   ReactNode,
   HTMLAttributes,
   useState,
-  ReactElement
+  ReactElement,
 } from 'react';
 import { headingStyle } from './styles/default';
 import { OptionsGroup } from './OptionsGroup';
 import { styled } from '@stitches/react';
-import ReactHtmlParser from 'react-html-parser'
+import ReactHtmlParser from 'react-html-parser';
 import { chakra } from '@chakra-ui/react';
 import CSS from 'csstype';
 
@@ -33,9 +33,10 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
   optionsVariant?: 'lined' | 'unlined';
   isInvalid?: boolean;
   inputLabel?: string;
-  triggerStyles?:CSS.Properties;
-  optionsStyles?:CSS.Properties;
+  triggerStyles?: CSS.Properties;
+  optionsStyles?: CSS.Properties;
   inputLabelStyle?: CSS.Properties;
+  onSelectChange: (value: any) => any;
 }
 
 export const SelectDefault = ({
@@ -59,15 +60,19 @@ export const SelectDefault = ({
   optionsStyles,
   inputLabel,
   inputLabelStyle,
+  onSelectChange,
   ...props
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [selection, setSelection] = useState<string[]>([]);
+  const [value, setValue] = useState<string>(defaultValue);
   const toggle = () => setOpen((prev) => !prev);
   const d = document.getElementById(selection[0]);
 
-  //function that handles when an option is clicked 
+  //function that handles when an option is clicked
   const handleOnClick = async (option: string) => {
+    setValue(option);
+    onSelectChange(option);
     if (selection.includes(option) === false) {
       setSelection([option]);
     } else {
@@ -83,12 +88,12 @@ export const SelectDefault = ({
   };
 
   //function to check if an option is selected
-  function isItemInSelection(item: string) {
+  const isItemInSelection = (item: string) => {
     if (selection.some((current) => current === item)) {
       return true;
     }
     return false;
-  }
+  };
   //base styles for select
   const BaseSelect = styled('div', {
     borderColor: borderColor,
@@ -191,12 +196,16 @@ export const SelectDefault = ({
 
   return (
     <>
-      <label style={{ ...inputLabelStyle }}>{inputLabel}&nbsp;<sup style={{color:'red'}}>{isRequired? '*' : null}</sup></label>
+      <label style={{ ...inputLabelStyle }}>
+        {inputLabel}&nbsp;
+        <sup style={{ color: 'red' }}>{isRequired ? '*' : null}</sup>
+      </label>
+      <select value={value} style={{ visibility: 'hidden' }} required></select>
       <BaseSelect
         variant={variant}
         size={size}
         {...props}
-        style={{...(disabledOrInvalidStyles(variant)), ...triggerStyles}}
+        style={{ ...disabledOrInvalidStyles(variant), ...triggerStyles }}
         aria-invalid={isInvalid}
         id="ssc-select"
       >
@@ -243,4 +252,4 @@ export const SelectDefault = ({
   );
 };
 
-export const Select = chakra(SelectDefault)
+export const Select = chakra(SelectDefault);
