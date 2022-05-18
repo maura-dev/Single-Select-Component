@@ -1,3 +1,5 @@
+const { styled } = require('@stitches/react');
+
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import React, {
   JSXElementConstructor,
@@ -8,34 +10,58 @@ import React, {
 } from 'react';
 import { headingStyle } from './styles/default';
 import { OptionsGroup } from './OptionsGroup';
-import { styled } from '@stitches/react';
+// import { styled } from '@stitches/react';
 import ReactHtmlParser from 'react-html-parser';
 import { chakra } from '@chakra-ui/react';
 import CSS from 'csstype';
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
+
+  /** Refers to the <OptionDefault> component */
   children:
     | ReactElement<any, string | JSXElementConstructor<any>>
     | ReactElement[];
+
+  /** Placeholder for the select trigger */
   placeholder: string;
+
+  /** Vaiants of the select trigger */
   variant?: 'filled' | 'flushed' | 'outlined';
+  /** Border color of the select trigger */
   borderColor?: string;
+  /** Disables the trigger and prevents the options from showing */
   isDisabled?: boolean;
+  /** Size of the select trigger */
   size?: 'md' | 'lg' | 'sm';
+  /** Helps to know if the value of the select is required in a form submission */
   isRequired?: boolean;
+  /** Icon that shows at the extreme right when the trigger is clicked to show options */
   dropdownOpenIcon?: ReactNode;
+   /** Icon that shows at the extreme right when the trigger is clicked to hide/close the options */
   dropdownCloseIcon?: ReactNode;
+  /** Default value of the select component */
   defaultValue: string;
+  /** Color of the border of the select when it is invalid */
   errorBorderColor?: string;
+  /** Color of the border of the select when it is focused */
   focusBorderColor?: string;
+  /** Placeholder color for the select trigger. It doesnt affect the dropdown Icon */
   placeholderColor?: string;
+  /** Placeholder icon for the select trigger */
   placeholderIcon?: ReactNode;
+   /** Variant of the Option group that houses the OptionDefault component */
   optionsVariant?: 'lined' | 'unlined';
+  /** Set when the select doesnt contain valid content or to trigger the error state */
   isInvalid?: boolean;
+  /** Label describing the select */
   inputLabel?: string;
+  /** Styles for the trigger select component */
   triggerStyles?: CSS.Properties;
+  /** Styles for the Option group that houses the OptionDefault component */
   optionsStyles?: CSS.Properties;
+  /** Styles for the select label */
   inputLabelStyle?: CSS.Properties;
+  /** This function returns the current value of the select component */
   onSelectChange?: (value: any) => any;
 }
 const handleChangeFunc = (value: any) => {
@@ -43,6 +69,9 @@ const handleChangeFunc = (value: any) => {
   return value;
 };
 
+/** 
+ * This referred to as the select trigger which triggers the options list 
+ **/
 export const SelectDefault = ({
   placeholder,
   variant = 'outlined',
@@ -73,7 +102,7 @@ export const SelectDefault = ({
   const toggle = () => setOpen((prev) => !prev);
   const d = document.getElementById(selection[0]);
 
-  //function that handles when an option is clicked
+  /** Function that handles when an option is clicked */
   const handleOnClick = async (option: string) => {
     setValue(option);
     onSelectChange(option);
@@ -91,14 +120,14 @@ export const SelectDefault = ({
     toggle();
   };
 
-  //function to check if an option is selected
+  /** Function to check if an option is selected */
   const isItemInSelection = (item: string) => {
     if (selection.some((current) => current === item)) {
       return true;
     }
     return false;
   };
-  //base styles for select
+  /** Base styles for select trigger */
   const BaseSelect = styled('div', {
     borderColor: borderColor,
     borderRadius: '6px',
@@ -160,7 +189,7 @@ export const SelectDefault = ({
     },
   });
 
-  //function to handle styles for disabled and invalid states
+  /** Function to handle styles for disabled and invalid states */
   function disabledOrInvalidStyles(x: string) {
     if (isDisabled) {
       if (x === 'outlined') {
@@ -204,7 +233,7 @@ export const SelectDefault = ({
         {inputLabel}&nbsp;
         <sup style={{ color: 'red' }}>{isRequired ? '*' : null}</sup>
       </label>
-      <select value={value} style={{ visibility: 'hidden' }} required></select>
+      <select value={value} style={{ visibility: 'hidden' }} required={isRequired}></select>
       <BaseSelect
         variant={variant}
         size={size}
@@ -212,15 +241,16 @@ export const SelectDefault = ({
         style={{ ...disabledOrInvalidStyles(variant), ...triggerStyles }}
         aria-invalid={isInvalid}
         id="ssc-select"
+        tabIndex={0}
+        onKeyPress={toggle}
+        onClick={toggle}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        role="button"
       >
         <div
-          tabIndex={0}
-          role="button"
+          
           style={{ ...headingStyle }}
-          onKeyPress={toggle}
-          onClick={toggle}
-          aria-haspopup="listbox"
-          aria-expanded={open}
         >
           <div>
             {selection.length > 0 ? (

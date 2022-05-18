@@ -1,6 +1,7 @@
+const { styled } = require('@stitches/react');
 import React, { ReactNode } from 'react';
 import { listStyle, defaultStyles } from './styles/default';
-import { styled } from '@stitches/react';
+// import { styled } from '@stitches/react';
 import CSS from 'csstype';
 import { ChevronUpIcon } from '@chakra-ui/icons';
 
