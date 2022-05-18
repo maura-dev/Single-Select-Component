@@ -240,7 +240,6 @@ export const SelectDefault = ({
         {...props}
         style={{ ...disabledOrInvalidStyles(variant), ...triggerStyles }}
         aria-invalid={isInvalid}
-        id="ssc-select"
         tabIndex={0}
         onKeyPress={toggle}
         onClick={toggle}
