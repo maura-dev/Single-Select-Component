@@ -4,6 +4,8 @@ import {
   listItemButtonStyle,
 } from './styles/default';
 import { styled } from '@stitches/react';
+import { chakra } from '@chakra-ui/react';
+import CSS from 'csstype';
 
 export interface OptionProps {
   children: string;
@@ -13,9 +15,10 @@ export interface OptionProps {
   rightIcon?: ReactNode;
   value: string;
   disabled?: boolean;
+  optionItemStyles?: CSS.Properties
 }
 
-export const OptionDefault = ({ handleOnClick, isItemInSelection, disabled=false, children, leftIcon, rightIcon, value }: OptionProps ) => {
+export const OptionDefault = ({ handleOnClick, isItemInSelection, disabled=false, children, leftIcon, rightIcon, value, optionItemStyles, ...props }: OptionProps ) => {
 
   //base styles for option
   const BaseOption = styled('li', {
@@ -55,23 +58,21 @@ export const OptionDefault = ({ handleOnClick, isItemInSelection, disabled=false
     }
   }
 
-	const isSelected = (x:string) => {
-			return isItemInSelection(x)
-	}
+  const isSelected = (x:string) => {
+      return isItemInSelection(x)
+  }
 
-	const handleClick = () => {
+  const handleClick = () => {
     if(!disabled){
       handleOnClick(children);
     } else{
       return
     }
-		
-	}
-
-	//const style = {disabled ? listItemStyleDisabled : listItemStyle}
+    
+  }
 
     return (
-        <BaseOption role="option" key={value} tabIndex={0} style={DisabledAndSelectedStyles()}>
+        <BaseOption role="option" key={value} tabIndex={0} style={{...(DisabledAndSelectedStyles()), ...optionItemStyles}} {...props}>
                         <button
                           type="button"
                           style={{ ...listItemButtonStyle }}
@@ -88,3 +89,5 @@ export const OptionDefault = ({ handleOnClick, isItemInSelection, disabled=false
                  </BaseOption> 
     );
 };
+
+export const Option = chakra(OptionDefault)

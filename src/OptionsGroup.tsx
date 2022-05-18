@@ -1,18 +1,20 @@
 import React, { ReactNode } from 'react';
 import { listStyle, defaultStyles } from './styles/default';
 import { styled } from '@stitches/react';
+import CSS from 'csstype';
 
 export interface OptionsGroupProps {
   children: ReactNode | ReactNode[];
   variant?: 'lined' | 'unlined';
+  optionsStyles?:CSS.Properties
 }
 
 export const OptionsGroup = ({
   children,
   variant,
+  optionsStyles,
   ...props
 }: OptionsGroupProps) => {
-  console.log({ variant });
   const BaseOption = styled('div', {
     variants: {
       variant: {
@@ -34,7 +36,7 @@ export const OptionsGroup = ({
   return (
     <BaseOption
       variant={variant}
-      style={{ ...defaultStyles }}
+      style={{ ...defaultStyles, ...optionsStyles }}
       {...props}
       role="listbox"
       tabIndex={-1}

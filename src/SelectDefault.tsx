@@ -10,6 +10,8 @@ import { headingStyle } from './styles/default';
 import { OptionsGroup } from './OptionsGroup';
 import { styled } from '@stitches/react';
 import ReactHtmlParser from 'react-html-parser'
+import { chakra } from '@chakra-ui/react';
+import CSS from 'csstype';
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   children: ReactElement<any, string | JSXElementConstructor<any>> | ReactElement[];
@@ -28,6 +30,8 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
   placeholderIcon?: ReactNode;
   optionsVariant?: 'lined' | 'unlined';
   isInvalid?:boolean;
+  triggerStyles?:CSS.Properties;
+  optionsStyles?:CSS.Properties;
 }
 
 export const SelectDefault = ({
@@ -47,6 +51,8 @@ export const SelectDefault = ({
   placeholderColor = '#2D3748',
   placeholderIcon,
   optionsVariant = 'unlined',
+  triggerStyles,
+  optionsStyles,
   ...props
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -197,8 +203,9 @@ export const SelectDefault = ({
         variant={variant}
         size={size}
         {...props}
-        style={disabledOrInvalidStyles(variant)}
+        style={{...(disabledOrInvalidStyles(variant)), ...triggerStyles}}
         aria-invalid={isInvalid}
+        id="ssc-select"
       >
         <div
           tabIndex={0}
@@ -224,7 +231,7 @@ export const SelectDefault = ({
       </BaseSelect>
 
       {open && !isDisabled ? (
-        <OptionsGroup variant={optionsVariant}>
+        <OptionsGroup variant={optionsVariant} optionsStyles={optionsStyles}>
           {React.Children.map(children, (child) => {
             return React.cloneElement(child, {
               handleOnClick: handleOnClick,
@@ -236,4 +243,5 @@ export const SelectDefault = ({
     </>
   );
 };
-//export const Select = chakra(SelectDefault)
+
+export const Select = chakra(SelectDefault)

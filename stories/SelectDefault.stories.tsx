@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import { SelectDefault, Props } from '../src/SelectDefault';
 import { OptionDefault } from '../src/OptionDefault';
-import {InfoIcon} from '@chakra-ui/icons';
+import { ArrowDownIcon, ArrowUpIcon, PhoneIcon } from '@chakra-ui/icons';
 
 const meta: Meta = {
   title: 'Custom Single Select Component',
@@ -35,6 +35,69 @@ const Template=({ numberOfChildren, ...args}) => (
 )
 
 export const Default= Template.bind({});
+
+export const SelectWithBorderColor= Template.bind({});
+SelectWithBorderColor.args = {
+  borderColor:'blue',
+}
+
+export const DisabledSelect= Template.bind({});
+DisabledSelect.args = {
+  isDisabled:true,
+}
+
+export const InvalidSelect= Template.bind({});
+InvalidSelect.args = {
+  isInvalid:true,
+}
+
+export const SelectWithCustomDropdownIcon= Template.bind({});
+SelectWithCustomDropdownIcon.args = {
+  dropdownOpenIcon:<ArrowDownIcon/>,
+  dropdownCloseIcon:<ArrowUpIcon/>
+}
+
+export const SelectWithErrorBorderColor= Template.bind({});
+SelectWithErrorBorderColor.args = {
+  errorBorderColor:'orange',
+  isInvalid:true,
+}
+
+export const SelectWithFocusBorderColor= Template.bind({});
+SelectWithFocusBorderColor.args = {
+  focusBorderColor:'purple',
+}
+
+export const SelectWithPlaceholderIcon= Template.bind({});
+SelectWithPlaceholderIcon.args = {
+  placeholderIcon:<PhoneIcon/>,
+}
+
+export const SelectWithPlaceholderColor= Template.bind({});
+SelectWithPlaceholderColor.args = {
+  placeholderIcon:<PhoneIcon/>,
+  placeholderColor:'blue',
+  dropdownOpenIcon:<ArrowDownIcon color='blue'/>,
+  dropdownCloseIcon:<ArrowUpIcon color='blue'/>,
+}
+
+export const SelectWithLinedOptions= Template.bind({});
+SelectWithLinedOptions.args = {
+  optionsVariant:"lined",
+}
+
+export const SelectWithStyledTriggerElement= Template.bind({});
+SelectWithStyledTriggerElement.args = {
+  placeholderColor:'white',
+  triggerStyles: {
+    backgroundColor:'green',
+    color:'white',
+    }
+}
+
+
+
+
 
 
 

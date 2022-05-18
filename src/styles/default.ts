@@ -20,7 +20,7 @@ export const headingStyle = {
 export const listStyle = {
   padding: '0',
   margin: '0',
-  width: '100%',
+  width: 'inherit',
   marginTop: '0px',
   minHeight: 'auto',
 };
