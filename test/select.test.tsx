@@ -11,7 +11,7 @@ describe('Select is rendered without failing', () => {
 
   beforeEach(() => {
     select = (
-      <SelectDefault defaultValue='Option 1' placeholder="Select Options">
+      <SelectDefault defaultValue="Option 1" placeholder="Select Options">
         <OptionDefault value="Option 1"> Option 1</OptionDefault>
         <OptionDefault value="Option 2"> Option 2</OptionDefault>
         <OptionDefault value="Option 3"> Option 3</OptionDefault>
@@ -40,12 +40,12 @@ describe('Select is rendered without failing', () => {
     expect(hasSVG).toBeInTheDocument();
   });
 
-  // it('Should be able to test using the query selector', () => {
-  //   const { container } = render(select);
-  //   const div = container.firstChild;
-  //   const aria = container.querySelector('[ aria-haspopup="listbox"]');
-
-  //   expect(aria).toBeInTheDocument();
-  //   expect(div).toBeInTheDocument();
-  // });
+  it('Should be able to test if the Select returns value of an Option on click', () => {
+    const { getByText, container } = render(select);
+    fireEvent.click(screen.getByRole(/button/i));
+    const options = getByText('Option 1');
+    fireEvent.click(options);
+    // check if the Select value changes to the option
+    expect(container).toBeInTheDocument();
+  });
 });
