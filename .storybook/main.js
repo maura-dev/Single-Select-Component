@@ -1,6 +1,6 @@
 module.exports = {
   stories: ['../stories/**/*.stories.@(ts|tsx|js|jsx)'],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-a11y', '@chakra-ui/storybook-addon'],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@chakra-ui/storybook-addon'],
   features:{
     emotionAlias: false
   },

@@ -40,7 +40,7 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
    /** Icon that shows at the extreme right when the trigger is clicked to hide/close the options */
   dropdownCloseIcon?: ReactNode;
   /** Default value of the select component */
-  defaultValue: string;
+  defaultValue?: string;
   /** Color of the border of the select when it is invalid */
   errorBorderColor?: string;
   /** Color of the border of the select when it is focused */
@@ -83,7 +83,7 @@ export const SelectDefault = ({
   isInvalid = false,
   dropdownOpenIcon = <ChevronDownIcon />,
   dropdownCloseIcon = <ChevronUpIcon />,
-  defaultValue = '',
+  defaultValue,
   errorBorderColor = '#E53E3E',
   focusBorderColor = '#3182CE',
   placeholderColor = '#2D3748',
@@ -98,7 +98,7 @@ export const SelectDefault = ({
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [selection, setSelection] = useState<string[]>([]);
-  const [value, setValue] = useState<string>(defaultValue);
+  const [value, setValue] = useState<string>(defaultValue|| "");
   const toggle = () => setOpen((prev) => !prev);
   const d = document.getElementById(selection[0]);
 
@@ -114,7 +114,7 @@ export const SelectDefault = ({
         (current) => current !== option
       );
       setSelection([...selectionAfterRemoval]);
-      defaultValue = '';
+      setValue('')
     }
 
     toggle();
@@ -129,6 +129,7 @@ export const SelectDefault = ({
   };
   /** Base styles for select trigger */
   const BaseSelect = styled('div', {
+    position:'relative',
     borderColor: borderColor,
     borderRadius: '6px',
     outline: 'none',
@@ -229,11 +230,11 @@ export const SelectDefault = ({
 
   return (
     <>
-      <label style={{ ...inputLabelStyle }}>
-        {inputLabel}&nbsp;
-        <sup style={{ color: 'red' }}>{isRequired ? '*' : null}</sup>
-      </label>
-      <select value={value} style={{ visibility: 'hidden' }} required={isRequired}></select>
+      <label style={{ ...inputLabelStyle }} htmlFor={`ssc-select-${value}`}>
+              {inputLabel}&nbsp;
+              <sup style={{ color: 'red' }}>{isRequired && inputLabel ? '*' : null}</sup>
+            </label>
+      {/*<select value={value} style={{ visibility: 'hidden' }} required={isRequired}></select>*/}
       <BaseSelect
         variant={variant}
         size={size}
@@ -247,27 +248,31 @@ export const SelectDefault = ({
         aria-expanded={open}
         role="button"
       >
-        <div
-          
-          style={{ ...headingStyle }}
-        >
+        <input
+          style={{ ...headingStyle, outlineStyle:'none', border:'none', opacity:'0' }}
+          value={value}
+          required={isRequired}
+          id={`ssc-select-${value}`}
+          placeholder={value}
+          title='Select an option'
+        />
+        <div style={{position:'absolute', display:'flex', alignItems:'center', justifyContent:'space-between', width:'98%', top:'10px'}}>
           <div>
             {selection.length > 0 ? (
-              <p style={{ color: isDisabled ? 'inherit' : placeholderColor }}>
+              <p style={{ color: isDisabled ? 'inherit' : placeholderColor, marginLeft:'10px' }}>
                 {d ? ReactHtmlParser(d.innerHTML) : placeholder}
               </p>
             ) : (
               <p style={{ color: isDisabled ? 'inherit' : placeholderColor }}>
-                <span>
+                <span style={{marginLeft:'10px'}}>
                   {placeholderIcon ? placeholderIcon : null} &nbsp; &nbsp;
                 </span>
                 {placeholder}
               </p>
             )}
           </div>
-          <div>
+          
             <p>{open ? dropdownOpenIcon : dropdownCloseIcon}</p>
-          </div>
         </div>
       </BaseSelect>
 

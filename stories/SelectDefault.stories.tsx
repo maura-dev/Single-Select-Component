@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Meta, Story } from '@storybook/react';
 import { SelectDefault, Props } from '../src/SelectDefault';
 import { OptionDefault } from '../src/OptionDefault';
@@ -11,9 +11,6 @@ const meta: Meta = {
     numberOfChildren: {
       type: 'number',
       defaultValue: 3,
-    },
-    defaultValue: {
-      defaultValue: '1',
     },
     placeholder: {
       defaultValue: 'Select one option',
@@ -62,6 +59,19 @@ RequiredSelect.args = {
     fontSize:'14px',
     textTransform:'uppercase',
   }
+}
+
+/** This should alert the selected value if any is selected after clicking submit */
+export const RequiredSelectWithForm = () => {
+  const [value, setValue] = useState("")
+  return(<form onSubmit={()=> alert(value)}>
+    <SelectDefault isRequired inputLabel='Number of children' onSelectChange={(val) => setValue(val)}>
+          <OptionDefault value="1">1</OptionDefault>
+          <OptionDefault value="2">2</OptionDefault>
+          <OptionDefault value="3">3</OptionDefault>
+    </SelectDefault>
+    <input type="submit" value="submit"/>
+  </form>)
 }
 
 
